@@ -109,7 +109,7 @@ async fn stop_handler(State(state): State<AppState>) -> (StatusCode, String) {
 
     match state.child.as_mut() {
         Some(process) => {
-            match process.kill() {
+            match kill_tree::blocking::kill_tree(process.id()) {
                 Ok(_) => {
                     state.child = None;
                     let msg = "Process stopped";
